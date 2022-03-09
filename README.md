@@ -40,6 +40,6 @@ Please refer to `evaluation/README.md` for more details on how to use the evalua
 
 
 ## License
-Our data and code are released under MIT License (see LICENSE file for details).
+Our code is released under MIT License (see LICENSE file for details).
 
 
