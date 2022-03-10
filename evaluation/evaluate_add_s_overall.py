@@ -62,7 +62,7 @@ if __name__ == "__main__":
                     assert frame_id in pred_dict[cls_type][seq_id]
                 except:
                     print('ERROR in {}'.format(seq_id + ',' + frame_id))
-                    mean_diff = np.inf
+                    mean_diff = float(2**31)
                     add_results.append(mean_diff)
                     continue
 
@@ -103,6 +103,13 @@ if __name__ == "__main__":
                                  '0.1 diameter': {'accuracy': adds_acc_01d_thres,
                                                   'auc': adds_auc_01d_thres}, }
 
+result_dict['Average'] = {}
+for thres in ['0.1 m', '0.1 diameter']:
+    result_dict['Average'][thres] = {}
+    for metric in ['accuracy', 'auc']:
+        result_dict['Average'][thres][metric] = \
+                np.mean([result_dict[cls_type][thres][metric] for cls_type in result_dict if 'Average' not in cls_type])
+
 
 head = ['', '0.1 m accuracy', '0.1 m auc', '0.1 d accuracy', '0.1 d auc']
 
@@ -110,7 +117,7 @@ cls_types = list(result_dict.keys())
 cls_types.sort()
 
 result_tabulate = [head]
-for cls_type in cls_types:
+for cls_type in cls_types + ['Average']:
     line = []
     for key_1 in ['0.1 m', '0.1 diameter']:
         for key_2 in ['accuracy', 'auc']:
