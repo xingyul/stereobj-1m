@@ -52,6 +52,8 @@ if __name__ == "__main__":
             data = [float(d) for d in data]
         obj_points = np.reshape(np.array(data), [-1, 3])
         obj_diameter = evaluate_util.diameter(obj_points)
+        ##### optional: use fewer objects points to speed up evaluation
+        obj_points = obj_points[:1024]
 
         add_results = []
 
