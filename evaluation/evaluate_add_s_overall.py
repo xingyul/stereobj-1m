@@ -23,7 +23,6 @@ import evaluate_util
 parser = argparse.ArgumentParser()
 parser.add_argument('--gpu', default='', help='GPU to use [default: ]')
 parser.add_argument('--object_data', default='', help='Object data directory [default: ]')
-parser.add_argument('--split', default='val', help='Dataset split [default: val]')
 parser.add_argument('--input_json', default='', help='Input json filename [default: ]')
 parser.add_argument('--gt_json', default='', help='GT json filename [default: ]')
 args = parser.parse_args()
