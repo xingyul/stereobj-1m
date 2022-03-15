@@ -1,10 +1,21 @@
 
 
-gpu=1
-data=/mnt/nas/xyl/stereobj_1m/images_annotations
-gt_dir=/mnt/nas/xyl/stereobj_1m/test_label
-input_json=../baseline_keypose/log_pnp_test/microplate.json
-split=test
+gpu=0
+data=/path/to/images_annotations
+
+##### for evaluating validation set performance of an object, e.g. microplate
+split=val
+gt_dir=/path/to/images_annotations
+input_json=../baseline_keypose/log_pnp_val/microplate.json
+# input_json=../baseline_keypose/log_classic_triangulation_val/microplate.json
+# input_json=../baseline_keypose/log_object_triangulation_val/microplate.json
+
+##### INTERNAL USE ONLY: for evaluating test set performance of an object, e.g. microplate
+# split=test
+# gt_dir=/path/to/test_label # internal test ground truth directory
+# input_json=../baseline_keypose/log_pnp_test/microplate.json
+# input_json=../baseline_keypose/log_classic_triangulation_test/microplate.json
+# input_json=../baseline_keypose/log_object_triangulation_test/microplate.json
 
 
 python evaluate_add_s_single_class.py \
