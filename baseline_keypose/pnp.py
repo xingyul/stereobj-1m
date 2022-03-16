@@ -22,7 +22,6 @@ import evaluate_util
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--split', default='test', help='Dataset split [default: test]')
-parser.add_argument('--data', default='', help='Data path [default: ]')
 parser.add_argument('--cls_type', default='', help='Object class of interest [default: ]')
 parser.add_argument('--image_width', type=int, default=768, help='Image width [default: 768]')
 parser.add_argument('--output_dir', default='', help='Output directory [default: ]')
@@ -34,13 +33,6 @@ if not os.path.exists(args.output_dir):
 
 
 if __name__ == "__main__":
-
-    obj_points_fname = os.path.join(args.data, 'objects/', args.cls_type + '.xyz')
-    with open(obj_points_fname, 'r') as f:
-        data = f.read().rstrip().split()
-        data = [float(d) for d in data]
-    obj_points = np.reshape(np.array(data), [-1, 3])
-    obj_diameter = evaluate_util.diameter(obj_points)
 
     add_results = []
     proj_results = []

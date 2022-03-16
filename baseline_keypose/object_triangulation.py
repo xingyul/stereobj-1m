@@ -23,7 +23,6 @@ parser.add_argument('--num_kp', type=int, default=64, help='Number of Keypoints 
 parser.add_argument('--image_width', type=int, default=768, help='Image width [default: 768]')
 parser.add_argument('--image_height', type=int, default=768, help='Image height [default: 768]')
 parser.add_argument('--split', default='test', help='Dataset split [default: test]')
-parser.add_argument('--data', default='', help='Data path [default: ]')
 parser.add_argument('--cls_type', default='', help='Object class of interest [default: ]')
 args = parser.parse_args()
 
