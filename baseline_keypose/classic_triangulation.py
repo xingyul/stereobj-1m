@@ -1,5 +1,5 @@
 '''
-    Single-GPU training.
+    Classic triangulation: point triangulation + Orthogonal Procrustes
 '''
 import argparse
 import glob

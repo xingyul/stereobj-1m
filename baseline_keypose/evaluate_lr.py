@@ -1,5 +1,6 @@
-
-
+'''
+    Single-GPU inference on val or test set.
+'''
 import argparse
 import cv2
 from datetime import datetime

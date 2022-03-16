@@ -1,5 +1,39 @@
 '''
-    Single-GPU training.
+    Evaluating merged JSON file that contains predictions for all object classes
+    The example format of the input JSON file is
+    {
+        "split": "test",
+        "pred": {
+            "blade_razor": {
+                "mechanics_scene_1_07272020_13": {
+                    "000000": [
+                        [1., 0., 0., 0.],
+                        [0., 1., 0., 0.],
+                        [0., 0., 1., 0.],
+                    ],
+                    "000001": [
+                        [1., 0., 0., 0.],
+                        [0., 1., 0., 0.],
+                        [0., 0., 1., 0.],
+                    ],
+                    ...
+                },
+                "mechanics_scene_2_08012020_17": {
+                    "000000": [ ...
+                    ],
+                    ...
+                },
+                ...
+            },
+            "hammer": {
+                "mechanics_scene_11_08212020_3": {
+                    ...
+                },
+                ...
+            },
+        },
+    }
+    For more details on the required format for input JSON file, please refer to README.md or https://sites.google.com/view/stereobj-1m/submission
 '''
 import argparse
 import tabulate

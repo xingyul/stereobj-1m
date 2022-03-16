@@ -1,5 +1,5 @@
 '''
-    Single-GPU training.
+    Combine all prediction JSON files for object tirangulation, for a single object class
 '''
 import argparse
 import json

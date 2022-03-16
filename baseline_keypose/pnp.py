@@ -1,5 +1,5 @@
 '''
-    Single-GPU training.
+    Perspective-n-point (PnP) for single-view 6D pose optimization
 '''
 import argparse
 import glob

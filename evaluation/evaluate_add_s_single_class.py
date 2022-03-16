@@ -1,5 +1,32 @@
 '''
-    Single-GPU training.
+    Evaluating JSON file that contains predictions for a single object class
+    The example format of the input json file is
+    {
+        "cls_type": "blade_razor",
+        "split": "test",
+        "pred": {
+            "mechanics_scene_1_07272020_13": {
+                "000000": [
+                    [1., 0., 0., 0.],
+                    [0., 1., 0., 0.],
+                    [0., 0., 1., 0.],
+                ],
+                "000001": [
+                    [1., 0., 0., 0.],
+                    [0., 1., 0., 0.],
+                    [0., 0., 1., 0.],
+                ],
+                ...
+            },
+            "mechanics_scene_2_08012020_17": {
+                "000000": [ ...
+                ],
+                ...
+            },
+            ...
+        },
+    }
+    Please refer to README.md for more details
 '''
 import argparse
 import cv2

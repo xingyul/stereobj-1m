@@ -1,5 +1,5 @@
 '''
-    Single-GPU training.
+    Object triangulation: single-step 6D pose optimization
 '''
 import argparse
 import glob

@@ -1,5 +1,5 @@
 '''
-    Single-GPU training.
+    Merge JSON prediction files of all object classes
 '''
 import argparse
 import json
