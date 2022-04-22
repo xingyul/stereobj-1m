@@ -253,12 +253,45 @@ class Dataset(data.Dataset):
 
 if __name__ == '__main__':
     from transforms import make_transforms
+    import argparse
+    import matplotlib.pyplot as plt
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--num_kp', type=int, default=16, help='Number of Keypoints [default: 1024]')
+    parser.add_argument('--image_width', type=int, default=1080, help='Image width [default: 768]')
+    parser.add_argument('--image_height', type=int, default=1080, help='Image height [default: 768]')
+    parser.add_argument('--data', default='/path/to/stereobj_1m/', help='Data path [default: ]')
+    parser.add_argument('--split', default='train', help='Dataset split [default: train]')
+    parser.add_argument('--cls_type', default='blade_razor', help='Object class of interest [default: ]')
+    args = parser.parse_args()
+
+
     transforms = make_transforms(True)
 
-    dataset = Dataset(is_train=True, cls_type='hammer', num_kp=20, height=512, width=512, transforms=transforms)
+    dataset = Dataset(args, transforms=transforms)
     data = dataset[600]
-    print(data)
+    print('-------------------')
+    print('Keys in the dict:')
+    print(list(data.keys()))
 
+    mean = [0.485, 0.456, 0.406]
+    std = [0.229, 0.224, 0.225]
 
+    inp = data['inp']
+    mask = data['mask']
+    prob = data['prob']
+    uv = data['uv']
+    img_id = data['img_id']
+
+    inp = inp * std + mean
+
+    print('-------------------')
+    print('Viewing:')
+    print(img_id[0], img_id[1], args.cls_type)
+
+    plt.imshow(inp)
+    plt.scatter(uv[:, 0], uv[:, 1])
+    plt.title(img_id[0] + ' ' + img_id[1] + ' ' + args.cls_type)
+    plt.show()
 
 

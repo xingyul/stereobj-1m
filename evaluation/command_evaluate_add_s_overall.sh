@@ -1,7 +1,7 @@
 
 
 gpu=0
-object_data=/path/to/images_annotations/objects
+object_data=/path/to/stereobj_1m/objects
 
 ##### for evaluating merged validation set performance
 gt_json=/path/to/val_label_merged.json # downloaded merged ground truth file

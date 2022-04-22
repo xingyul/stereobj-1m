@@ -8,7 +8,7 @@ Please download the image and annotation data, camera parameters, object files a
 The next step is to extract the tar files. The user needs to create the soft link or copy the files such that the file format looks like the following:
 
 ```
-/path/to/images_annotations
+/path/to/stereobj_1m/
     biolab_scene_10_08212020_1/
     biolab_scene_10_08212020_2/
     biolab_scene_10_08212020_3/
@@ -27,7 +27,7 @@ The next step is to extract the tar files. The user needs to create the soft lin
 The command script for launching the training of KeyPose model is `command_train.sh`.
 This script will train a net model of predicting object 2D projected keypoints.
 
-Inside the command file, please set the value of `data` to be the path to be `/path/to/images_annotations`. The user may also choose to use ImageNet pre-trained weights to initialize the ResNet-34 backbone of the KeyPose model.
+Inside the command file, please set the value of `data` to be the path to be `/path/to/stereobj_1m`. The user may also choose to use ImageNet pre-trained weights to initialize the ResNet-34 backbone of the KeyPose model.
 One choice is to download the pre-trained model from [here](https://github.com/tensorpack/tensorpack/blob/master/examples/ResNet/README.md).
 Please set the value of `pretrained_models` flag to be the path to the downloaded net weights npz file.
 

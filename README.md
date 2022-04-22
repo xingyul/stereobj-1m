@@ -25,15 +25,34 @@ We present a large-scale stereo RGB image object pose estimation dataset named t
 ## Data Download
 
 The data can be downloaded [here](https://www.dropbox.com/sh/b1e5xuzysyxqg0a/AAANEt13l8zWSxcv7IkIzVEwa?dl=0). You can find the stereo images, 6D pose annotations, pre-generated instance masks, bounding boxes, and dataset split information.
+After extracting the downloaded tar files, the files should look like the following:
+```
+/path/to/stereobj_1m/
+    biolab_scene_10_08212020_1/
+    biolab_scene_10_08212020_2/
+    biolab_scene_10_08212020_3/
+    ...
+    mechanics_scene_10_08212020_1/
+    mechanics_scene_10_08212020_2/
+    mechanics_scene_10_08212020_3/
+    ...
+    objects/
+    split/
+    camera.json
+```
 
 ## Data Loader
 
 We provide an implementation of the data loader in [data_loader/](data_loader/). Feel free to adapt it for your own use (e.g. add more augmentation, improve speed etc.). The data loader implmentation is used in the following KeyPose baseline in [baseline_keypose/](baseline_keypose/).
 
+To visualize a data sample loaded from the dataset, run the following command inside [data_loader/](data_loader/):
+```
+python stereobj1m_dataset.py --data /path/to/stereobj_1m/
+```
+
 ## KeyPose Baseline
 
 We implementated [KeyPose](https://arxiv.org/abs/1912.02805) as a baseline method. The code for the baseline is in [baseline_keypose/](baseline_keypose/). Please refer to [baseline_keypose/README.md](baseline_keypose/README.md) for more details on how to use the code.
-
 
 ## Evaluation Script and File format
 The command scripts for launching 6D pose evaluation is located in [evaluation/](evaluation/).

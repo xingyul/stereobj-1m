@@ -1,11 +1,11 @@
 
 
 gpu=0
-data=/path/to/images_annotations
+data=/path/to/stereobj_1m/
 
 ##### for evaluating validation set performance of an object, e.g. microplate
 split=val
-gt_dir=/path/to/images_annotations
+gt_dir=/path/to/stereobj_1m/
 input_json=../baseline_keypose/log_pnp_val/microplate.json
 # input_json=../baseline_keypose/log_classic_triangulation_val/microplate.json
 # input_json=../baseline_keypose/log_object_triangulation_val/microplate.json
