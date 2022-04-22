@@ -92,7 +92,7 @@ BN_DECAY_CLIP = 0.99
 train_data_loader = make_data_loader.make_data_loader(args, lr=False, split=args.split)
 
 
-DECAY_STEP = args.decay_step * len(train_data_loader) * 3
+DECAY_STEP = args.decay_step * len(train_data_loader) * BATCH_SIZE
 
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
