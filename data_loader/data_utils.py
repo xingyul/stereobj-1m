@@ -1,6 +1,5 @@
 import pycocotools.mask as mask_utils
 import numpy as np
-from plyfile import PlyData
 from PIL import Image
 
 

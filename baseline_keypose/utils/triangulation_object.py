@@ -172,9 +172,7 @@ if __name__ == '__main__':
     sys.path.append(os.path.join(ROOT_DIR, '..', 'utils'))
     sys.path.append(os.path.join(ROOT_DIR, 'datasets'))
 
-    import viz_object_in_image
     import viz_tool
-    import pose_dataset_kp
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--class_oi', type=str, default='pipette_0.5_10', help='Class of interest [default: pipette_0.5_10]')
@@ -236,8 +234,6 @@ if __name__ == '__main__':
             else:
                 image_show = image_full[:, (image_full.shape[1] // 2):]
 
-            # viz_object_in_image.viz_object_in_image(image_show[:, :, ::-1], full_xyz, \
-            #         R_label, t_label + tvec, cam_mat=proj_mat)
             viz_tool.viz_seg(image, None, None, \
                     pred_mask, pred_kp_dist_prob[:, :, :5], \
                     center_field_label=None, subset='biolab')
@@ -264,24 +260,6 @@ if __name__ == '__main__':
     end = time.time()
     print('time elapse:', end - start)
     print('cost:', cost)
-
-    view = False
-    if view:
-        full_xyz = pose_dataset_kp.read_xyz( \
-                filename=os.path.join('../dataset_processing/objects', FLAGS.class_oi + '.xyz'), \
-                num_points=1024)
-        image_full_path = full_data['image_full_path']
-        image_full = cv2.imread(image_full_path)
-
-        dump_image_filename = os.path.join(DUMP_DIR, \
-                os.path.basename(FLAGS.eval_result_file).split('.npz')[0] + '.png')
-        image_full = cv2.imread(image_full_path)
-        image = image_full[:, :(image_full.shape[1]//2)]
-        image = image[:, :, ::-1]
-
-        viz_object_in_image.viz_object_in_image(image,
-                # full_xyz, R, t, cam_mat=proj_mat[:, :3], save_path=None)
-                full_xyz, R, t, cam_mat=proj_mat[:, :3], save_path=dump_image_filename)
 
     save_filename = os.path.join(DUMP_DIR, \
             os.path.basename(FLAGS.eval_result_file).split('.npz')[0] + '.json')
