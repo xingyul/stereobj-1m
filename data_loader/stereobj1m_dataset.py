@@ -256,11 +256,17 @@ if __name__ == '__main__':
     import argparse
     import matplotlib.pyplot as plt
 
+    ##### rgb and mask renderer of meshes
+    # please first go to `rgb_and_mask_renderer` and install the renderer package
+    # by `python setup.py install`, then import it here
+    import renderer as pytorch_renderer
+    ##### rgb and mask renderer of meshes
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--num_kp', type=int, default=16, help='Number of Keypoints [default: 1024]')
     parser.add_argument('--image_width', type=int, default=1080, help='Image width [default: 768]')
     parser.add_argument('--image_height', type=int, default=1080, help='Image height [default: 768]')
-    parser.add_argument('--data', default='/path/to/stereobj_1m/', help='Data path [default: ]')
+    parser.add_argument('--data', default='/mnt/nas/xyl/stereobj_1m/images_annotations/', help='Data path to images_annotations/ directory [default: /mnt/nas/xyl/stereobj_1m/images_annotations/ ]')
     parser.add_argument('--split', default='train', help='Dataset split [default: train]')
     parser.add_argument('--cls_type', default='blade_razor', help='Object class of interest [default: ]')
     args = parser.parse_args()
@@ -282,16 +288,98 @@ if __name__ == '__main__':
     prob = data['prob']
     uv = data['uv']
     img_id = data['img_id']
+    rt = data['pose_gt']
 
+    ##### viewing the keypoints
     inp = inp * std + mean
 
     print('-------------------')
-    print('Viewing:')
+    print('Viewing projected keypoints of:')
     print(img_id[0], img_id[1], args.cls_type)
 
     plt.imshow(inp)
     plt.scatter(uv[:, 0], uv[:, 1])
     plt.title(img_id[0] + ' ' + img_id[1] + ' ' + args.cls_type)
+    plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'kp.png'))
     plt.show()
+    ##### viewing the keypoints
 
+    ##### read camera calibration parameters
+    ### the camera calibration parameters are for 1440x1440 images
+    ### for other resolutions, it needs to be scaled
+    cam_idx = 3
+    with open(os.path.join(dataset.args.data, 'camera.json'), 'r') as f:
+        camera_param = json.load(f)
+
+    baseline = abs(np.array(camera_param['right']['P'])[0, -1] / np.array(camera_param['right']['P'])[0, 0]) # baseline length in terms of meters
+    K = np.array(camera_param['left']['P'])[:, :-1]
+    K = torch.Tensor(K).cuda()
+    K = K[None, :, :]
+    ##### read camera calibration parameters
+
+    ##### read the mesh file of the object
+    vertices, faces = pytorch_renderer.load_obj(os.path.join(dataset.args.data, 'objects', dataset.args.cls_type + '.obj'), load_textures=False)
+    vertices = vertices[None, :, :]  # [bs, num_vertices, 3]
+    faces = faces[None, :, :]  # [bs, num_faces, 3]
+
+    # bounding box of the mesh
+    bbox_x_max = torch.max(vertices[0, :, 0])
+    bbox_x_min = torch.min(vertices[0, :, 0])
+    bbox_y_max = torch.max(vertices[0, :, 1])
+    bbox_y_min = torch.min(vertices[0, :, 1])
+    bbox_z_max = torch.max(vertices[0, :, 2])
+    bbox_z_min = torch.min(vertices[0, :, 2])
+
+    # deal with pipette_100_1000 specially, only for norm_coords
+    if 'pipette_100_1000' in args.cls_type:
+        obj_filepath = os.path.join(os.path.dirname(obj), 'pipette_0.5_10' + '.obj')
+        vertices_spec, _ = pytorch_renderer.load_obj(obj_filepath, load_textures=False)
+        vertices_spec = vertices_spec[None, :, :]  # [bs, num_vertices, 3]
+        bbox_x_max = torch.max(vertices_spec[0, :, 0])
+        bbox_x_min = torch.min(vertices_spec[0, :, 0])
+        bbox_y_max = torch.max(vertices_spec[0, :, 1])
+        bbox_y_min = torch.min(vertices_spec[0, :, 1])
+        bbox_z_max = torch.max(vertices_spec[0, :, 2])
+        bbox_z_min = torch.min(vertices_spec[0, :, 2])
+
+    # normalized coordinate features
+    norm_coord_x = (vertices[:, :, 0] - bbox_x_min) / (bbox_x_max - bbox_x_min)
+    norm_coord_y = (vertices[:, :, 1] - bbox_y_min) / (bbox_y_max - bbox_y_min)
+    norm_coord_z = (vertices[:, :, 2] - bbox_z_min) / (bbox_z_max - bbox_z_min)
+    features = torch.stack((norm_coord_x, norm_coord_y, norm_coord_z), -1)
+
+    ##### read the mesh file of the object
+
+
+    ##### render normalized coordinate images
+    IMAGE_HEIGHT = 1440
+    IMAGE_WIDTH = 1440
+    renderer = pytorch_renderer.Renderer(image_height=IMAGE_HEIGHT,
+                          image_width=IMAGE_WIDTH,
+                          camera_mode='projection', render_outside=True)
+
+    R_np = rt[:, :3]
+    t_np = rt[:, -1]
+
+    R = torch.Tensor(R_np).cuda()
+    R = R[None, :, :]
+    t = torch.Tensor(t_np).cuda()
+    t = t[None, None, :]
+
+    rgb, mask, depth_map = renderer(vertices, \
+            faces, features, K, R, t)
+
+    rgb = rgb[0, IMAGE_HEIGHT:2*IMAGE_HEIGHT,
+              IMAGE_WIDTH:2*IMAGE_WIDTH]
+    mask = mask[0, IMAGE_HEIGHT:2*IMAGE_HEIGHT,
+              IMAGE_WIDTH:2*IMAGE_WIDTH]
+
+    rgb = (rgb * 255).astype('uint8')
+    mask = (mask * 255).astype('uint8')
+    rgb = cv2.resize(rgb, (args.image_width, args.image_height))
+    mask = cv2.resize(mask, (args.image_width, args.image_height))
+
+    cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'norm_coord.png'), rgb)
+    cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mask.png'), mask)
+    ##### render normalized coordinate images
 
