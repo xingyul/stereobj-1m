@@ -45,10 +45,17 @@ After extracting the downloaded tar files, the files should look like the follow
 
 We provide an implementation of the data loader in [data_loader/](data_loader/). Feel free to adapt it for your own use (e.g. add more augmentation, improve speed etc.). The data loader implmentation is used in the following KeyPose baseline in [baseline_keypose/](baseline_keypose/).
 
-To visualize a data sample loaded from the dataset, run the following command inside [data_loader/](data_loader/):
+To visualize a data sample loaded from the dataset, run the following example script that uses our data loader inside [data_loader/](data_loader/):
 ```
-python stereobj1m_dataset.py --data /path/to/stereobj_1m/
+python stereobj1m_dataset.py --data /path/to/stereobj_1m/images_annotations/
 ```
+The generated examples include input images, and rendered normalized coordnate maps and instance masks using the provided 3D mesh files (e.g. `hammer` object). The output should look like the followings:
+
+<p float="left">
+    <img src="https://github.com/xingyul/stereobj-1m/blob/master/doc/example_image.png" width="32%">
+    <img src="https://github.com/xingyul/stereobj-1m/blob/master/doc/example_norm_coord.png" width="32%">
+    <img src="https://github.com/xingyul/stereobj-1m/blob/master/doc/example_mask.png" width="32%">
+</p>
 
 ## KeyPose Baseline
 
