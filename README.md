@@ -27,7 +27,7 @@ We present a large-scale stereo RGB image object pose estimation dataset named t
 The data can be downloaded [here](https://www.dropbox.com/sh/b1e5xuzysyxqg0a/AAANEt13l8zWSxcv7IkIzVEwa?dl=0). You can find the stereo images, 6D pose annotations, pre-generated instance masks, bounding boxes, and dataset split information.
 After extracting the downloaded tar files, the files should look like the following:
 ```
-/path/to/stereobj_1m/
+/path/to/stereobj_1m/images_annotations/
     biolab_scene_10_08212020_1/
     biolab_scene_10_08212020_2/
     biolab_scene_10_08212020_3/
