@@ -268,7 +268,7 @@ if __name__ == '__main__':
     parser.add_argument('--image_height', type=int, default=1080, help='Image height [default: 768]')
     parser.add_argument('--data', default='/mnt/nas/xyl/stereobj_1m/images_annotations/', help='Data path to images_annotations/ directory [default: /mnt/nas/xyl/stereobj_1m/images_annotations/ ]')
     parser.add_argument('--split', default='train', help='Dataset split [default: train]')
-    parser.add_argument('--cls_type', default='blade_razor', help='Object class of interest [default: ]')
+    parser.add_argument('--cls_type', default='hammer', help='Object class of interest [default: ]')
     args = parser.parse_args()
 
 
