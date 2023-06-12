@@ -379,6 +379,10 @@ if __name__ == '__main__':
     rgb = cv2.resize(rgb, (args.image_width, args.image_height))
     mask = cv2.resize(mask, (args.image_width, args.image_height))
 
+    image = (inp[:, :, ::-1] * 255).astype('uint8')
+    image = cv2.resize(image, (args.image_width, args.image_height))
+
+    cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'image.png'), image)
     cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'norm_coord.png'), rgb)
     cv2.imwrite(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mask.png'), mask)
     ##### render normalized coordinate images
